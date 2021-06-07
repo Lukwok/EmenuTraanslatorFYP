@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required metadata tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Translate and analyze text with Azure Cognitive Services.">
+    <!--Script Source-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type='text/javascript' src="../static/scripts/main.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Translate</title>
+  </head>
+  <body>
+    <!--other finction-->
+    <div class="w3-top">
+      <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+        <a href="/home" class="w3-bar-item w3-button">Home</a>
+        <!-- Right-sided navbar links. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+          <a href="/manage/zh/edit?rest_id={{r_docs._id}}" class="w3-bar-item w3-button">Edit</a>
+          <a href="/view_cart" class="w3-bar-item w3-button">Cart</a>
+          <a href="#contact" class="w3-bar-item w3-button">Login</a>
+        </div>
+      </div>
+    </div>
+    <header class="w3-container w3-center w3-yellow" style="height:350px">
+        <h1></h1>
+        <div class="w3-row-padding" style="margin-top:100px">
+          <div class="w3-col s4">
+              <img src="" style="width:75%;">
+           </div>
+          <div class="w3-col s8 w3-white w3-center"style="height:200px; opacity: 0.5">
+            <h1><Strong>{{r_docs.name[0]}} <br> {{r_docs.name[1]}}</Strong></h1>
+          </div>
+        </div>
+  </header>
+  <div class = "w3-col s3">
+    <table class="w3-table w3-border">
+      <tr><th colspan="2">Address</th></tr>
+      <tr><td colspan="2">{{r_docs.address.chinese}}</td></tr>
+      <tr><td colspan="2">{{r_docs.address.english}}</td></tr>
+      <tr><th colspan="2">Phone</th></tr>
+      <tr><td colspan="2">{{r_docs.phone}}</td></tr>
+      <tr><th colspan="2">Open Hours</th></tr>
+      <tr>
+          {% if r_docs.openH|length == 1 %}
+            <th rowspan="{{r_docs.openH[0]|length}}"> Monday to Sunday </th>
+            <td>{{r_docs.openH[0][0]}}
+          {% for h in r_docs.openH[0] %}
+            {% if loop.index>1 %}
+              <tr><td>{{h}}</td></tr>
+            {% endif %}
+          {% endfor %}
+          {% endif %}
+      </tr> 
+      <tr><th colspan="2">Payment</th></tr>
+      <tr><td colspan="2">
+        {% for p in r_docs.payment %}
+          {{p}} <br>
+        {% endfor %} 
+      </td></tr>
+      <tr><th colspan="2">Extra Information </th></tr>
+    </table>
+  </div>
+  <div class = "w3-col s9">
+    <div class="w3-container " id="Emenu">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Menu
+        <div class="w3-right w3-hide-small">
+          <a href="/detail/zh/{{r_docs._id}}" class="w3-bar-item w3-button">中文</a>
+          <a href="/detail/en/{{r_docs._id}}" class="w3-bar-item w3-button">English</a>
+          <a href="/detail/jp/{{r_docs._id}}" class="w3-bar-item w3-button">日本語</a>
+          <a href="/detail/kr/{{r_docs._id}}" class="w3-bar-item w3-button">한국어</a>
+        </div>
+      </h3>
+      <div class="form-group">
+        <table class="w3-table w3-striped w3-border">
+          {% set group = m_docs.type %}
+          {% for g in group %} 
+            <tr>
+              <th>{{g}}</th>
+              <th></th>
+            </tr>
+            {% for d in m_docs.dish %}
+                {% if (d.type == g) %}
+                  <tr>
+                    <td> <a href="/dish/{{lang}}?id={{m_docs._id}}&index={{loop.index-1}}&r_id={{r_docs._id}}">{{d.name}}</a></td>
+                    <td> ${{d.price}}</td>
+                  </tr>
+                {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </table>
+      </div>         
+    </div>
+  </div>
+  <br>
+
+  
+</div>
+
+  
+    <!-- <div class="container">
+      <div class="row">   
+             
+          <label for="image-to-translate"><strong>Enter the image url:</strong></label>
+          <input class="form-control" type="url" id ="imageURL">
+          <br><br>
+          <button class="btn btn-primary mb-2" type="submit" id ="imageButton">Enter</button> 
+             
+      </div> -->
+       <!--Image Upload-->
+      <!-- <div class="row">
+        <div class = "col">
+          <label for="image-to-translate"><strong>Your Image:</strong></label>
+          <img id="upload_image" src=""/>
+        </div>
+        <div class = "col">
+          <label for="image-to-translate"><strong>Text in Image:</strong></label>
+          
+        </div>
+      </div>
+    </div> -->
+     <!-- End -->  
+    <script>
+    
+    </script>
+  </body>
+</html>

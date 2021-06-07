@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required metadata tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Translate and analyze text with Azure Cognitive Services.">
+    <!--Script Source-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js" integrity="sha512-1bpfZkKJ+WlmJN/I2KLm79dSiuOos0ymwL5IovsUVARyzcaf9rSXsVO2Cdg4qlKNOQXh8fd1d0vKeY9Ru3bQDw==" crossorigin="anonymous"></script>
+    <!-- <script type='text/javascript' src="../static/scripts/main.js"></script> -->
+    <script type='text/javascript' src="../static/scripts/cropper.js"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css" integrity="sha512-jO9KUHlvIF4MH/OTiio0aaueQrD38zlvFde9JoEA+AQaCNxIJoX4Kjse3sO2kqly84wc6aCtdm9BIUpYdvFYoA==" crossorigin="anonymous" />
+    <title>Translate</title>
+  </head>
+  <body>
+    <!--other finction-->
+    <div class="w3-top">
+      <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+        <a href="/home" class="w3-bar-item w3-button">Home</a>
+        <!-- Right-sided navbar links. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+          <a href="#about" class="w3-bar-item w3-button">Update</a>
+          <a href="#menu" class="w3-bar-item w3-button">Help</a>
+          <a href="#contact" class="w3-bar-item w3-button">Login</a>
+        </div>
+      </div>
+    </div>
+    <header class="w3-container w3-center w3-padding-64 w3-yellow">
+      <form action="/restaurant" methon="GET">
+        <h1></h1>
+        <div class="w3-row">
+        <div class="w3-col w3-container m10">
+            <input class="w3-input w3-section w3-border" type="text" placeholder="Search restaurant by name" required name="Email">
+        </div>
+        <div class="w3-col w3-container m2">
+            <button class="w3-button w3-black w3-section" type="submit">
+            <i class="fa fa-search"></i> SEARCH
+          </button>
+        </div>
+        </div>
+      </form>
+    </header>
+             
+    <div class="w3-container">
+        <div class="w3-row-padding">     
+          <div class="img-container">
+          </div>   
+        </div>
+        <!--Image Upload-->
+        <div class="w3-row-padding">
+        <div class = "w3-col w3-container w3-half">
+            <label for="image-to-translate"><strong>Your Image:</strong></label>
+            <div>
+              <img id="imageU" src="../static/images/picture.jpg" width="100%" style="display: block;">
+            </div>
+        </div>
+        <div class = "w3-col w3-container w3-half">
+            <!-- <button class="btn btn-primary mb-2" id ="cropImage" onclick="cropImage()">Crop</button> -->
+            <button class="btn btn-primary mb-2" id ="getCrop" name="getCrop" >Extract</button>
+            <div style="overflow: hidden; width:100%" class="select" >
+              <img id="pre-image" src="../static/images/picture.jpg" width="50%" height="50%"  style="display: block;">
+            </div>
+            <label for="image-to-translate"><strong>Text in Image:</strong></label><br>
+            <textarea readonly style="width:100%" id="image-result" rows="10" onkeyup="autogrow(this);"></textarea>
+        </div>
+        </div>
+    </div>
+     <!-- End -->  
+    <script>
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          
+          reader.onload = function(e) {
+            $('#image').attr('src', e.target.result);
+          }
+          
+          reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+      }
+
+      $("#imgInp").change(function() {
+        readURL(this);
+      });
+
+       function getCrop(){
+        var newImg = cropper.getCroppedCanvas();
+        document.body.appendChild(newImg);
+       }; 
+      
+      
+    </script>
+  </body>
+</html>

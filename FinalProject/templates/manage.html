@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required metadata tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Translate and analyze text with Azure Cognitive Services.">
+    <!--Script Source-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script type='text/javascript' src="../../static/scripts/update.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Translate</title>
+  </head>
+  <style>
+    .myinput {
+      vertical-align: middle;
+      margin: 5px 10px 5px 0;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-style: hidden hidden solid hidden
+    }
+    </style>
+  <body>
+    <!--other finction-->
+    <div class="w3-top">
+      <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+        <a href="/home" class="w3-bar-item w3-button">Home</a>
+        <!-- Right-sided navbar links. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+          <a href="#" class="w3-bar-item w3-button">Shop Information</a>
+          <a href="/manage/zh/edit?rest_id={{r_docs._id}}" class="w3-bar-item w3-button">中文</a>
+          <a href="/manage/en/edit?rest_id={{r_docs._id}}" class="w3-bar-item w3-button">English</a>
+          <a href="/manage/jp/edit?rest_id={{r_docs._id}}" class="w3-bar-item w3-button">日本語</a>
+          <a href="/manage/kr/edit?rest_id={{r_docs._id}}" class="w3-bar-item w3-button">한국어</a>
+        </div>
+      </div>
+    </div>
+    <header class="w3-container w3-center w3-yellow" style="height:100px">
+    </header>
+    <div class= "row">
+      <div class="col">
+        <div class="w3-container">
+          <h2>{{r_docs.name[0]}}</h2>
+        </div>
+        <br>
+        <form class="w3-container">
+        <div style="overflow-y: scroll; height:500px;" id="left">
+          {% for d in m_doc.dish %}
+          <div class="w3-card">
+          <div class="w3-container">
+              Dish Name: <input class="myinput" style="width:70%" type="text" value="{{d.name}}" readonly><br>
+              Price: <input class="myinput" style="width:70%" type="text" value="{{d.price}}"readonly><br>
+              {% if d.decription %} 
+              Description: <input class="myinput" style="width:70%" type="text" value="{{d.decription}}"readonly>
+              {% endif %}
+          </div>
+          </div>
+          {% endfor %}
+          {% if m_doc.soup %}
+            {% for d in m_doc.soup %}
+            <div class="w3-card">
+            <div class="w3-container">
+                Name: <input class="myinput" style="width:70%" type="text" value="{{d.name}}" readonly><br>
+                Price: <input class="myinput" style="width:70%" type="text" value="{{d.price}}"readonly><br>
+            </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if m_doc.topping %}
+          {% for d in m_doc.topping %}
+          <div class="w3-card">
+          <div class="w3-container">
+              Name: <input class="myinput" style="width:70%" type="text" value="{{d.name}}" readonly><br>
+              Price: <input class="myinput" style="width:70%" type="text" value="{{d.price}}"readonly><br>
+          </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          {% if m_doc.level %}
+          <div class="w3-card">
+          <div class="w3-container">
+              {% for d in m_doc.level %}
+              Taste: <input class="myinput" style="width:70%" type="text" value="{{d}}" readonly><br>
+              {% endfor %}
+          </div>
+          </div>
+          {% endif %}
+          </div>
+        </form>
+      </div>
+      <div class="col">
+        <div class="w3-container">
+          <h2>{{r_docs.name[1]}}</h2>
+        </div>
+        <br>
+          <form class="w3-container" method="POST">
+            <div style="overflow-y: scroll; height:500px;" id="right">
+              <div id="dish">
+                {% for d in f_m_doc.dish %}
+                <div class="w3-card">
+                <div class="w3-container">
+                    Dish Name: <input class="myinput" style="width:70%" id="name" type="text" value="{{d.name}}" ><br>
+                    Price: <input class="myinput" style="width:70%" id="price" type="text" value="{{d.price}}"><br>
+                    {% if d.decription %} 
+                    Description: <input class="myinput" style="width:70%" id="description" type="text" value="{{d.decription}}">
+                    {% endif %}
+                </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% if f_m_doc.soup %}
+              <div id="soup">
+                {% for d in f_m_doc.soup %}
+                <div class="w3-card">
+                <div class="w3-container">
+                    Name: <input class="myinput" style="width:70%" type="text" id="name" value="{{d.name}}" ><br>
+                    Price: <input class="myinput" style="width:70%" type="text" id="price" value="{{d.price}}"><br>
+                </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+    
+              {% if f_m_doc.topping %}
+              <div id="topping">
+                {% for d in f_m_doc.topping %}
+                <div class="w3-card">
+                <div class="w3-container">
+                    Name: <input class="myinput" style="width:70%" type="text" id="nameT" value="{{d.name}}" ><br>
+                    Price: <input class="myinput" style="width:70%" type="text" id="price"value="{{d.price}}"><br>
+                </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+    
+              {% if f_m_doc.level %}
+              <div id="level">
+                <div class="w3-card">
+                <div class="w3-container">
+                    {% for d in f_m_doc.level %}
+                    Taste: <input class="myinput" style="width:70%" type="text" id="taste" value="{{d}}" ><br>
+                    {% endfor %}
+                </div>
+                </div>
+              </div>
+              {% endif %}    
+            </div>
+              <input type = "hidden" id= "lang" value="{{lang}}">
+              <input type = "hidden" id="r_id" value="{{f_m_doc._id}}">
+              <br>
+              <input type="button" class="btn btn-primary" name="update_b" id="update_b" value="Update">
+              <input type="button" class="btn btn-primary" onclick="location.href='/detail/zh/{{r_docs._id}}'" value="Cancel">
+          </form>
+          <br>
+      </div>
+    </div>
+  </body>
+  
+</div>
+
+<script type="text/javascript">
+$(function(){
+  $('#left').scroll(function(){
+      $('#right').scrollTop($(this).scrollTop());    
+  })
+})
+</script>
+  
+</body>
+</html>
